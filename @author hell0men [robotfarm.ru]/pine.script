@@ -1,0 +1,14 @@
+//
+// @author TradingView
+// 
+study("Franklin barcolor ATR", overlay=true)
+i = input(title="Размер между хаем и (1=close, 2=high/low)", type=integer, defval=1)
+a = input(title="Кол-во ATR для размера", type=integer, defval=1)
+o = input(title="Макс. отступ в ATR от EMA", type=integer, defval=3)
+ema65=ema(close,65)
+atrover= high-atr(15)[i-1]*a
+atrunder= low+atr(15)[i-1]*a
+isover() => (i==2?low:close) < atrover and close<open and close>ema65 and close-ema65<atr(15)[i-1]*o
+isunder() => (i==2?high:close) > atrunder and close>open and close<ema65 and ema65-close<atr(15)[i-1]*o
+barcolor(isover() ? orange: na)
+barcolor(isunder() ? purple: na)
